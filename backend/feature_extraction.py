@@ -4,7 +4,7 @@ import shutil
 import re
 import zipfile
 import subprocess
-
+from project_metadata import ProjectMetadata
 
 def create_dir(path):
     if not (os.path.isdir(path)):
@@ -57,6 +57,7 @@ def get_regex_counts(filename, regex_pattern):
 
 def create_csv(trainDir, outfilename, students):
     output = open(outfilename, "w")
+    projectMetadata = ProjectMetadata()
 
     output.write(
         "nr_crt,label,nr_clase,nr_errors,nr_inheritance,nr_virtual,nr_static,")
@@ -80,6 +81,12 @@ def create_csv(trainDir, outfilename, students):
 
         class_number = len(headers)
         sources_number = len(sources)
+
+        #append sources, headers and files count to metadata
+        projectMetadata.sourcesCount += sources_number
+        projectMetadata.headersCount += class_number
+        projectMetadata.filesCount += sources_number + class_number
+
 
         if not (os.path.isfile(trainDir + std + "/codying_style.txt")):
             command = ["cpplint", "--recursive", local_dir + "/sources/"]
@@ -191,6 +198,17 @@ def create_csv(trainDir, outfilename, students):
         to_Write.append(headers_size)
         to_Write.append(sources_size)
 
+        #append informations to metadata object
+        projectMetadata.classesCount += class_number
+        projectMetadata.derivedClassesCount += inheritance_count
+        projectMetadata.virtualFunctionsCount += virtual_count
+        projectMetadata.privateMethodsCount += private_count
+        projectMetadata.publicMethodsCount += public_count
+        projectMetadata.protectedMethodsCount += protected
+        projectMetadata.stlElementsCount += stl_count
+        projectMetadata.templateClassesCount += template_count
+
+
         for w in to_Write:
             output.write(str(w) + ",")
         output.write("\n")
@@ -198,6 +216,9 @@ def create_csv(trainDir, outfilename, students):
         nrCrt += 1
 
     output.close()
+
+    #todo: replace this with a filled object
+    return projectMetadata
 
 
 def extract_zip(zipPath, destPath, scope):
@@ -267,14 +288,15 @@ def retrain_data_one(path_to_new_label):
         if (label == newLabel[0]):
             newLabels.append(label)
 
-    create_csv(trainDir, "../data/featuresRetrained.csv", newLabels)
+    filesMetadata = create_csv(trainDir, "../data/featuresRetrained.csv", newLabels)
     new_data = merge_csv("../data/featuresRetrained.csv",
                          "../data/features.csv")
     os.remove("../data/featuresRetrained.csv")
 
     new_data = (new_data[0].split(","))[1:-1]
 
-    return new_data
+    # returns new data and metadata about the uploaded project
+    return { "new_data" : new_data, "files_metadata" : filesMetadata }
 
 
 def add_new_line_csv(csv_file, data):
