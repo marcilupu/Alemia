@@ -13,6 +13,15 @@ import { Doughnut, Bar } from 'react-chartjs-2'
 
 import "./stylesheets/Stats.css"
  
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
 class Stats extends React.Component{
     
     constructor(props){
@@ -129,20 +138,21 @@ class Stats extends React.Component{
         }
 
         if(this.props.metadata.keyWordsList)
-            for(let i = 0; i < this.props.metadata.keyWordsList.length; i++){
-                let keywordData = this.props.metadata.keyWordsList[i];
-                let keys = Object.keys(keywordData);
+        {
+            let keywords = Object.keys(this.props.metadata.keyWordsList)
+            for(let i = 0; i < keywords.length; i++){
 
                 keywordsBarChartModel.data.datasets.push( 
                     {
-                        label: keys[0],
-                        backgroundColor: 'rgba(0,255,0,1)',
+                        label: keywords[i],
+                        backgroundColor: getRandomColor(),
                         borderColor: 'rgba(0,0,0,1)',
                         borderWidth: 2,
-                        data: [ keywordData[keys[0]] ]
+                        data: [ this.props.metadata.keyWordsList[keywords[i]]]
                     }
                 )
             }
+        }
         
         if(keywordsBarChartModel.data.datasets.length == 0)
             keywordsBarChartModel.data.datasets.push( 
@@ -226,13 +236,32 @@ class Stats extends React.Component{
                     </Col>
                 </Row>
                 <Row className="p-4">
+                    <Col>
+                        <h5 class="text-center p-0 m-0">Constructors defined</h5>
+                    </Col>
+                </Row>
+                <Row className="p-4 py-2">
                     <Col className="d-flex justify-content-center">
                         <Badge className="badge-primary m-1">Constructors ({this.props.metadata.constructorsCount})</Badge> {' '}
                         <Badge className="badge-secondary m-1">Default Constructors ({this.props.metadata.defaultConstructorsCount})</Badge>{' '}
-                        <Badge className="badge-danger m-1">Parameters Constructors ({this.props.metadata.parametersConstructorCount})</Badge>{' '}
+                        <Badge className="badge-danger m-1">Constructors with parameters ({this.props.metadata.parametersConstructorCount})</Badge>{' '}
                         <Badge className="badge-success m-1">Copy Constructors ({this.props.metadata.copyConstructorsCount})</Badge> {' '}
                         <Badge className="badge-warning m-1" text="dark">Move Constructors ({this.props.metadata.moveConstructorsCount})</Badge>{' '}
-                        <Badge className="badge-info m-1">Destructors Constructors ({this.props.metadata.destructorsCount})</Badge>{' '}
+                        <Badge className="badge-info m-1">Destructors ({this.props.metadata.destructorsCount})</Badge>{' '}
+                    </Col>
+                </Row>
+                <Row className="p-4">
+                    <Col>
+                        <h5 class="text-center p-0 m-0">Operators overloaded</h5>
+                    </Col>
+                </Row>
+                <Row className="p-4 py-2">
+                    <Col className="d-flex justify-content-center">
+                        {
+                            Object.keys(this.props.metadata.overloadedOperatorsList ?? {}).map( function(operator) {
+                                return <Badge className="badge-primary m-1">Operator ({operator})</Badge>
+                            })
+                        }
                     </Col>
                 </Row>
                 <Row className="p-4">

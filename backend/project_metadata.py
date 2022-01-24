@@ -1,37 +1,35 @@
 class ProjectMetadata:
   def __init__(self):
-    self.interfacesCount = 0 #unmaped
-    self.abstractClassesCount = 0 #unmaped
+    self.interfacesCount = 0
+    self.abstractClassesCount = 0
     self.classesCount = 0
     self.derivedClassesCount = 0
-    self.multipleDerivedClassesCount = 0 #unmaped
+    self.multipleDerivedClassesCount = 0 
     
     self.filesCount = 0
     self.sourcesCount = 0
     self.headersCount = 0
-    self.linesCount = 0 #unmaped
-    self.sourcesLinesCount = 0 #unmaped
-    self.headersLinesCount = 0 #unmaped
-    self.keyWordsList = [] #unmaped
+    self.linesCount = 0 
+    self.sourcesLinesCount = 0 
+    self.headersLinesCount = 0 
+    self.keyWordsList = {}
     self.singletonClassesCount = 0 #unmaped
     
-    self.pureVirtualFunctionsCount = 0 #unmaped
+    self.pureVirtualFunctionsCount = 0
     self.virtualFunctionsCount = 0
-    self.overloadedFunctionsCount = 0 #unmaped
+    self.overloadedFunctionsCount = 0
     self.privateMethodsCount = 0
     self.publicMethodsCount = 0
     self.protectedMethodsCount = 0
-    
-    self.overloadedOperatorsCount = 0 #unmaped
-    self.overloadedOperatorsList = [] #unmaped
     self.overridingFunctionsCount = 0 #unmaped
     
-    self.constructorsCount = 0 #unmaped
-    self.defaultConstructorsCount = 0 #unmaped
-    self.parametersConstructorCount = 0 #unmaped
-    self.copyConstructorsCount = 0 #unmaped
-    self.moveConstructorsCount = 0 #unmaped
-    self.destructorsCount = 0 #unmpaed
+    self.overloadedOperatorsList = {}
+    self.constructorsCount = 0 
+    self.defaultConstructorsCount = 0 
+    self.parametersConstructorCount = 0 
+    self.copyConstructorsCount = 0
+    self.moveConstructorsCount = 0 
+    self.destructorsCount = 0 
     
     self.stlElementsCount = 0
     self.templateClassesCount = 0
@@ -64,7 +62,6 @@ class ProjectMetadata:
         "publicMethodsCount" : self.publicMethodsCount,
         "protectedMethodsCount" : self.protectedMethodsCount,
         
-        "overloadedOperatorsCount" : self.overloadedOperatorsCount,
         "overloadedOperatorsList" : self.overloadedOperatorsList,
         "overridingFunctionsCount" : self.overridingFunctionsCount,
         
