@@ -57,11 +57,12 @@ def predict_route():
     with zipfile.ZipFile(full_path, "r") as zip_file:
         zip_file.extractall(extraction_full_path)
 
+    copy_full_path = extraction_full_path
+
     number_dirs = 0
-    for path in os.walk(extraction_full_path+"/"):
+    for path in os.walk(extraction_full_path + "/"):
         number_dirs += 1
 
-    copy_full_path = extraction_full_path
     if number_dirs == 1:
         list_mark1 = []
         list_nameFolder1 = []
@@ -90,8 +91,8 @@ def predict_route():
         list_mark2 = []
         list_nameFolder2 = []
 
-        for filename in os.listdir(extraction_full_path + "/"):
-            extraction_full_path = extraction_full_path + "/" + filename
+        for fname in os.listdir(extraction_full_path + "/"):
+            extraction_full_path = extraction_full_path + "/" + fname
             features = feature_extraction.retrain_data_one(copy_full_path + "/")
             features = preprocessor.transform_entry(features)
 
@@ -106,7 +107,7 @@ def predict_route():
             grades_df.to_csv(GRADES_CSV_FILENAME, index=False)
 
             list_mark2.append(grade)
-            list_nameFolder2.append(filename)
+            list_nameFolder2.append(fname)
             
         # Return a result
         result = {"name_folder": list_nameFolder2, "predicted_grade": list_mark2}

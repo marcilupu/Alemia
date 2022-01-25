@@ -137,8 +137,8 @@ class App extends React.Component {
                             <span class="sr-only">Loading...</span>
                         </div>
                     </Jumbotron>
-                    {/* Place to bind the predicted grade, change it or retrain the model */}
-
+                    {
+                    /* Place to bind the predicted grade, change it or retrain the model */}
                     <Jumbotron className={second_step_classes}>
 
                         <Tabs className="m-3">
