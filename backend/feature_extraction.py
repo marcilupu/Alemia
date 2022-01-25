@@ -125,6 +125,7 @@ def create_csv(trainDir, outfilename, students):
 
         keywords_pattern = {}
 
+        #get overloaded operators
         for keyword in keywords:
             keywords_pattern[keyword] = re.compile("\W*(" + keyword + ")\W*")
             projectMetadata.keyWordsList[keyword] = 0
