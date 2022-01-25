@@ -6,6 +6,7 @@ import {
     Tabs,
     Tab,
     InputGroup,
+    Spinner,
     Button
 } from "react-bootstrap"
 import axios from "axios"
@@ -20,7 +21,8 @@ class App extends React.Component {
         selected_filename: "Archive",
         predicted_grade: [],
         adjusted_grade: "",
-        name_folder: []
+        name_folder: [],
+        displaySpinner: false
     }
 
     constructor(props) {
@@ -45,6 +47,8 @@ class App extends React.Component {
 
         form_data.append("file", event.target.files[0])
 
+        this.setState({ displaySpinner: true });
+
         axios.post(API_BASE_ADDRESS + "/predict", form_data, {
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -54,7 +58,8 @@ class App extends React.Component {
             this.setState({
                 current_step: 2,
                 predicted_grade: response.data.predicted_grade,
-                name_folder: response.data.name_folder
+                name_folder: response.data.name_folder,
+                displaySpinner: false
             })
         }).catch(error => console.log(error));
 
@@ -98,16 +103,13 @@ class App extends React.Component {
         if (this.state.current_step === 1) {
             first_step_classes.push("current")
             second_step_classes.push("d-none")
-            intermediare.push("current")
         }
         else {
             first_step_classes.push("done")
             second_step_classes.push("current")
-            intermediare.push("d-none")
         }
         first_step_classes = first_step_classes.join(" ")
         second_step_classes = second_step_classes.join(" ")
-        intermediare = intermediare.join(" ")
         return (
             <div className="App">
 
@@ -132,11 +134,7 @@ class App extends React.Component {
                         </Form>
 
                     </Jumbotron>
-                    <Jumbotron className={intermediare}>
-                        <div class="spinner-border m-5" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </Jumbotron>
+                    <Spinner className={this.state.displaySpinner ? "" : "d-none"} animation="border"></Spinner>
                     {
                     /* Place to bind the predicted grade, change it or retrain the model */}
                     <Jumbotron className={second_step_classes}>
