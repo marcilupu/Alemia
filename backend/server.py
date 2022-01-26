@@ -11,7 +11,7 @@ import time
 import warnings
 import feature_extraction
 from preprocessor import Preprocessor
-from train import Train, Predictor
+from train.train import Train, Predictor
 
 DOWNLOAD_DIRECTORY = "uploads"
 EXTRACTION_DIRECTORY = "../data/raw/train"
