@@ -1,3 +1,4 @@
+
 import React from "react"
 import {
     Container,
@@ -7,8 +8,9 @@ import {
     Button
 } from "react-bootstrap"
 import axios from "axios"
-import appConfig from "./config/default.config.json" 
 import "./stylesheets/App.css"
+import { Stats } from './Stats'
+import appConfig from "./config/default.config.json" 
 
 const API_BASE_ADDRESS = appConfig.python_sever_address; // "http://127.0.0.1:3001"
 
@@ -18,7 +20,8 @@ class App extends React.Component{
         current_step: 1,
         selected_filename: "Archive",
         predicted_grade: "NaN",
-        adjusted_grade: ""
+        adjusted_grade: "",
+        metadata : {}
     }
 
     constructor(props){
@@ -52,8 +55,10 @@ class App extends React.Component{
             this.setState({
                 current_step: 2,
                 selected_filename: event.target.files[0].name,
-                predicted_grade: response.data.predicted_grade
+                predicted_grade: response.data.predicted_grade,
+                metadata: response.data.metadata
             })
+ 
         }).catch(error => console.log(error));
 
     }
@@ -91,11 +96,13 @@ class App extends React.Component{
 
         var first_step_classes = ["process-step"]
         var second_step_classes = ["process-step"]
+        var graphics_classes = ["process-step"]
 
         // Get classes for each jumbotron
         if (this.state.current_step === 1){
             first_step_classes.push("current")
             second_step_classes.push("inactive")
+            graphics_classes.push("hide")
         }
         else{
             first_step_classes.push("done")
@@ -110,7 +117,7 @@ class App extends React.Component{
                 <Container>
 
                     {/* Logo and application name */}
-                    <div className="logo-container">
+                    <div className="row logo-container justify-content-md-center">
                         <img src="images/logo.png" alt="Naevia Logo"></img>
                         <h1>Alemia</h1>
                     </div>
@@ -174,12 +181,14 @@ class App extends React.Component{
                         </Button>
 
                     </Jumbotron>
-
+                    <Jumbotron className={graphics_classes}>
+                        <Stats metadata = {this.state.metadata }></Stats>
+                    </Jumbotron>
                 </Container>
 
             </div>
         )
     }
 }
-
+ 
 export default App
