@@ -179,4 +179,3 @@ train.calculate_test()
 
 # # print(y_true)
 # print("RMSE: ", train._calculate_rmse(y_true, true_notes))
-
