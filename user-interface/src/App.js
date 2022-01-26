@@ -5,7 +5,9 @@ import {
     Form,
     InputGroup,
     Spinner,
-    Button
+    Button,
+    Tabs,
+    Tab
 } from "react-bootstrap"
 import axios from "axios"
 import "./stylesheets/App.css"
